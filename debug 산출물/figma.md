@@ -1,3 +1,3 @@
-##피그마<https://www.figma.com/file/Esipwir3fnw2GP5DFqy2hF/debug-proto-0.1?type=design&node-id=0%3A1&mode=dev&t=V58xdeSvBQ1lrjju-1>
+[##피그마 바로가기](https://www.figma.com/file/JZvotsFgOOG51K4EWpo6e6/proto?type=design&node-id=0%3A1&mode=design&t=MT4I41dwhr6HlNkr-1)
 
-##피그마 프로토타입<https://www.figma.com/proto/Esipwir3fnw2GP5DFqy2hF/debug-proto-0.1?type=design&node-id=9-69&t=viHr7OFFZvYRc1uC-1&scaling=scale-down&page-id=0%3A1&starting-point-node-id=9%3A69&mode=design>
+[피그마 프로토타입](https://www.figma.com/file/JZvotsFgOOG51K4EWpo6e6/proto?type=design&node-id=0%3A1&mode=design&t=MT4I41dwhr6HlNkr-1)
