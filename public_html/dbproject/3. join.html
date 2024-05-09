@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <style>
+    /* 스타일 */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .container label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .container2 {
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-top : 10px;
+      text-align : center;
+    }
+
+    a:link {
+      color : red;
+    }
+    a:visited {
+      color : red;
+    }
+
+    #name, #id, #password, #confirmPassword {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    #join {
+      width: 100%;
+      padding: 10px;
+      background-color: #424242;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #id_check {
+      background-color: #424242;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #join:hover {
+      background-color: #848484;
+    }
+  </style>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // 로그인 중복확인 버튼 클릭 시 이벤트 처리
+      $("#id_check").click(function(e) {
+        e.preventDefault();
+        checkIdDuplicate();
+      });
+
+      function checkIdDuplicate() {
+        var id = $("#id").val(); // 입력된 아이디 값 가져오기
+
+        if (!id) {
+          alert("아이디를 입력해 주세요!");
+          return;
+        }
+
+        // 서버로 아이디 중복 확인 요청
+        $.ajax({
+          url: "join_idcheck.php",
+          type: "GET",
+          data: { id: id },
+          success: function(response) {
+            alert(response); // 결과를 알림창으로 표시
+          }
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>회원가입</h2>
+    <form action="join_dbsend.php" method="post" onsubmit="return validateForm()">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
+
+      <div style="float:left"><label for="id">아이디</label></div>
+      <div style="float:right"><button type="submit" id="id_check">아이디 중복확인</button></div>
+      <input type="text" id="id" name="id" placeholder="아이디를 입력하세요" required>
+
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+
+      <label for="confirmPassword">비밀번호 확인</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 입력하세요" required>
+
+      <button type="submit" id="join">가입하기</button>
+    </form>
+
+    <script>
+      function validateForm() {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          alert("비밀번호가 같지 않습니다.");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </div>
+  <div class="container2">
+    이미 계정이 있다면?<br>
+    >> <a href="2. login.html" style="text-decoration: none">로그인</a> << 으로 돌아가기
+  </div>
+</body>
+</html>
