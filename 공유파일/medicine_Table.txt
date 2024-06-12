@@ -1,0 +1,14 @@
+CREATE TABLE medicine_data (
+    품목명 VARCHAR(255),
+    품목_영문명 VARCHAR(255),
+    업체명 VARCHAR(255),
+    업체_영문명 VARCHAR(255),
+    업허가번호 VARCHAR(100),
+    업일련번호 INTEGER,
+    업종 VARCHAR(100),
+    전문일반구분 VARCHAR(50),
+    주성분 VARCHAR(255),
+    주성분수 INTEGER,
+    분류명 VARCHAR(255),
+    품목허가번호 VARCHAR(100)
+);
