@@ -1,0 +1,348 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+/* 로그인 */
+body {
+    position: relative;
+    width: 1440px;
+    height: 1086px;
+    background: #FFFFFF;
+}
+
+/* 제목 없음 1 */
+body::before {
+    content: '';
+    position: absolute;
+    width: 1440px;
+    height: 1086px;
+    left: 0;
+    top: 0;
+    background: url('제목 없음.png') no-repeat center center/cover;
+    mix-blend-mode: darken;
+    opacity: 0.3;
+    filter: blur(2px);
+}
+
+/* 제목 없음 2 */
+body::after {
+    content: '';
+    position: absolute;
+    width: 1440px;
+    height: 1086px;
+    left: 0;
+    top: 0;
+    background: url('제목 없음.png') no-repeat center center/cover;
+    mix-blend-mode: darken;
+    opacity: 0.3;
+    filter: blur(2px);
+}
+
+/* Frame 32 */
+.frame32 {
+    position: absolute;
+    width: 1440px;
+    height: 169px;
+    left: 0;
+    top: 917px;
+}
+
+/* Footer */
+.footer {
+    position: absolute;
+    height: 169px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #FFFFFF;
+}
+
+/* Rectangle 45 */
+.rectangle45 {
+    position: absolute;
+    width: 99px;
+    height: 30px;
+    left: 1064px;
+    top: 55px;
+    background: #D9D9D9;
+    border-radius: 6px;
+}
+
+/* Team_debug */
+.team_debug {
+    position: absolute;
+    width: 123px;
+    height: 30px;
+    left: 80px;
+    top: 48px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    color: #000000;
+}
+
+/* Social Icons */
+.social_icons {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 8px;
+    position: absolute;
+    width: 184px;
+    height: 40px;
+    right: 80px;
+    top: 48px;
+}
+
+/* Buttons / Icon */
+.buttons_icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    position: relative;
+}
+
+/* Icon */
+.buttons_icon i {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 8px;
+    top: 8px;
+}
+
+/* Vector */
+.vector {
+    position: absolute;
+    left: 8.33%;
+    right: 8.33%;
+    top: 8.5%;
+    bottom: 8.5%;
+    background: #828282;
+}
+
+/* Divider */
+.divider {
+    position: absolute;
+    width: 1280px;
+    height: 0px;
+    left: 80px;
+    top: 1px;
+    border: 1px solid #E6E6E6;
+}
+
+/* 관리자 로그인 */
+.admin_login {
+    position: absolute;
+    width: 83px;
+    height: 20px;
+    right: 80px;
+    top: 48px;
+    font-weight: 100;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000000;
+}
+
+/* Copy */
+.copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 24px;
+    position: absolute;
+    height: 194.78px;
+    left: 20.76%;
+    right: 20.76%;
+    top: 412px;
+}
+
+/* 로그인 하여 PillEat! */
+.login_text {
+    width: 842px;
+    height: 36px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #828282;
+}
+
+/* Frame 34 */
+.frame34 {
+    width: 467px;
+    height: 62px;
+}
+
+/* Submit Button */
+.submit_button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 467px;
+    height: 62px;
+}
+
+/* Field */
+.field {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+    gap: 10px;
+    width: 327px;
+    height: 62px;
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+/* Label */
+.label {
+    width: 18px;
+    height: 30px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 150%;
+    color: #828282;
+}
+
+/* 영문, 소문자, 숫자 사용가능 */
+.info_text {
+    width: 212.12px;
+    height: 48.78px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 150%;
+    color: rgba(0, 0, 0, 0.2);
+}
+
+/* 회원가입 */
+.signup {
+    position: absolute;
+    width: 91px;
+    height: 30px;
+    left: 548px;
+    top: 682px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #828282;
+}
+
+/* 회원정보 찾기 */
+.find_info {
+    position: absolute;
+    width: 140px;
+    height: 30px;
+    left: 545px;
+    top: 641px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #828282;
+}
+
+/* Frame 35 */
+.frame35 {
+    position: absolute;
+    width: 327px;
+    height: 62px;
+    left: 556px;
+    top: 554px;
+}
+
+/* Frame 29 */
+.frame29 {
+    position: absolute;
+    width: 124px;
+    height: 62px;
+    left: 759px;
+    top: 651px;
+}
+
+/* Button-New */
+.button_new {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 32px;
+    gap: 8px;
+    width: 124px;
+    height: 62px;
+    background: #000000;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+/* 로그인 버튼 텍스트 */
+.button_new .button_text {
+    width: 56px;
+    height: 30px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+/* PillEat 제목 */
+.pilleat {
+    position: absolute;
+    width: 376px;
+    height: 192px;
+    left: 532px;
+    top: 220px;
+    font-weight: 500;
+    font-size: 128px;
+    line-height: 150%;
+    text-align: center;
+    color: #000000;
+}
+
+/* Rectangle 9 */
+.rectangle9 {
+    position: absolute;
+    width: 420px;
+    height: 100px;
+    left: 401px;
+    top: 535px;
+}
+
+/* 영문, 소문자, 숫자 사용가능 */
+.hidden_info_text {
+    position: absolute;
+    visibility: hidden;
+    left: 1.43%;
+    right: 48.07%;
+    top: 62%;
+    bottom: -10.78%;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 150%;
+    color: rgba(0, 0, 0, 0.2);
+}
