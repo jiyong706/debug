@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500&display=swap');
 
+/* 기본 스타일 */
 * {
     margin: 0;
     padding: 0;
@@ -15,6 +16,7 @@ body {
     background-color: #f5f5f5;
 }
 
+/* 헤더 스타일 */
 header {
     background: #f0f0f0; /* 배경색을 약간 어두운 흰색으로 변경 */
     padding: 1rem;
@@ -54,6 +56,7 @@ header {
     border-radius: 4px;
 }
 
+/* 메인 컨텐츠 스타일 */
 main {
     flex: 1;
     padding: 2rem;
@@ -65,6 +68,7 @@ main {
     gap: 2rem; /* 간격을 2rem으로 설정 */
 }
 
+/* 양쪽 패널 스타일 */
 .left-panel, .right-panel {
     background: #fff;
     padding: 2rem; /* 패널의 패딩을 증가 */
@@ -181,6 +185,7 @@ main {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 푸터 스타일 */
 footer {
     background: #f0f0f0; /* 배경색을 약간 어두운 흰색으로 변경 */
     color: #000; /* 텍스트 색상을 검은색으로 변경 */
@@ -220,4 +225,177 @@ footer {
 
 .social-icons a {
     color: #000; /* 아이콘 색상을 검은색으로 변경 */
+}
+
+/* 달력 추가 스타일 */
+.date-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.date-btn {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.date-btn:hover {
+    background-color: #d0d0d0;
+    transform: scale(1.05);
+}
+
+.date-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.month-navigation {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+.month-navigation a {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.month-navigation a:hover {
+    background-color: #0056b3;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.calendar-grid div {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.calendar-grid div:hover {
+    background-color: #d0d0d0;
+}
+
+.calendar-grid .header {
+    background-color: #007bff;
+    color: white;
+}
+
+.calendar-grid .day {
+    min-height: 100px;
+    position: relative;
+}
+
+.calendar-grid .day.completed {
+    background-color: #a0e3a0;
+}
+
+.medications {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* 복용중인 약 체크 스타일 */
+.content h2 {
+    margin-bottom: 1rem;
+    color: #000; /* 텍스트 색상을 검은색으로 변경 */
+}
+
+form {
+    width: 100%;
+}
+
+form ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+form li {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form li label {
+    margin-left: 0.5rem;
+    color: #000;
+}
+
+form button {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 1rem;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+form p {
+    color: #000;
+    text-align: center;
+}
+
+
+.medication-time.current {
+    background: #ffeb3b; /* 현재 시간을 강조하는 배경색 */
+    font-weight: bold;
+}
+
+.medication-time .label.button.completed {
+    background: #28a745; /* 복용완료 색상 유지 */
+    color: #fff; /* 텍스트 색상을 흰색으로 유지 */
+    cursor: default;
+    pointer-events: none; /* 클릭 불가능하게 설정 */
 }

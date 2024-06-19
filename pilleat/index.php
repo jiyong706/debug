@@ -5,6 +5,15 @@ if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
 }
+
+include 'config.php';
+
+$id = $_SESSION['id'];
+$query = $conn->prepare("SELECT fname, lname FROM users WHERE id = ?");
+$query->bind_param("s", $id);
+$query->execute();
+$result = $query->get_result();
+$user = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -14,26 +23,10 @@ if (!isset($_SESSION['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
     <title>PillEat</title>
-    <style>
-        .camera-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-        .camera-icon img {
-            width: 30px; /* 아이콘 크기 */
-            height: 30px;
-        }
-    </style>
 </head>
 <body>
     <header>
         <div class="nav">
-            <div class="camera-icon">
-                <a href="upload.php"><img src="camera_icon.png" alt="Upload"></a> <!-- 카메라 아이콘 이미지 경로 설정 -->
-            </div>
             <div class="logo">PillEat</div>
             <div class="menu">
                 <a href="search.php">약 검색</a>
@@ -52,32 +45,19 @@ if (!isset($_SESSION['id'])) {
                 </div>
             </div>
             <div class="right-panel">
-                <h2>
-                    <?php 
-                    if (isset($_SESSION['fname']) && isset($_SESSION['lname'])) {
-                        echo htmlspecialchars($_SESSION['fname'] . " " . $_SESSION['lname']); 
-                    } else {
-                        echo "사용자";
-                    } 
-                    ?> 님의 복약내역
-                </h2>
-                <div class="calendar">
-                    <div class="date-buttons" id="date-buttons">
-                        <!-- 날짜 버튼은 JS에서 생성됩니다 -->
-                    </div>
-                </div>
+                <h2><?php echo htmlspecialchars($user['fname']) . " " . htmlspecialchars($user['lname']); ?> 님의 복약내역</h2>
                 <div class="medication-schedule">
                     <div class="medication-time">
                         <div class="time">07:30</div>
-                        <div class="label button">확인 버튼</div>
+                        <div class="label button" onclick="markCompleted(this)">확인 버튼</div>
                     </div>
                     <div class="medication-time">
                         <div class="time">12:00</div>
-                        <div class="label button">확인 버튼</div>
+                        <div class="label button" onclick="markCompleted(this)">확인 버튼</div>
                     </div>
                     <div class="medication-time">
                         <div class="time">19:00</div>
-                        <div class="label button">확인 버튼</div>
+                        <div class="label button" onclick="markCompleted(this)">확인 버튼</div>
                     </div>
                 </div>
             </div>
@@ -106,8 +86,42 @@ if (!isset($_SESSION['id'])) {
                 <a href="#">Page</a>
                 <a href="#">Page</a>
             </div>
+            <div class="footer-section">
+                <p>Topic</p>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+            </div>
         </div>
     </footer>
     <script src="calendar.js"></script>
+    <script>
+        function markCompleted(element) {
+            element.classList.add('completed');
+            element.innerText = '복용 완료';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinutes = now.getMinutes();
+
+            const times = document.querySelectorAll('.medication-time .time');
+
+            times.forEach(function(timeElement, index) {
+                const [hour, minutes] = timeElement.textContent.split(':').map(Number);
+
+                if (index > 0) {
+                    const prevTimeElement = times[index - 1];
+                    const [prevHour, prevMinutes] = prevTimeElement.textContent.split(':').map(Number);
+
+                    if ((currentHour > prevHour || (currentHour === prevHour && currentMinutes >= prevMinutes)) &&
+                        (currentHour < hour || (currentHour === hour && currentMinutes < minutes))) {
+                        timeElement.parentElement.classList.add('current');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

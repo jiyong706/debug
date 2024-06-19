@@ -9,7 +9,7 @@
 <body>
     <header>
         <div class="nav">
-            <div class="logo">PillEat</div>
+            <div class="logo"><a href="index.php">PillEat</div>
             <div class="menu">
                 <a href="index.php">메인</a>
                 <a href="check.php">복용중인 약 체크</a>

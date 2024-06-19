@@ -1,11 +1,12 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "pilleat_db";
+$dbname = "pilleat_db"; // 변경된 데이터베이스 이름
 
 function get_drug_info($text, $conn) {
-    $sql = "SELECT * FROM drugs WHERE name LIKE ?";
+    $sql = "SELECT DISTINCT name, dosage FROM drugs WHERE name LIKE ?";
     $stmt = $conn->prepare($sql);
     $like_text = "%$text%";
     $stmt->bind_param("s", $like_text);
@@ -16,8 +17,10 @@ function get_drug_info($text, $conn) {
 
 function display_results($lines, $conn) {
     $found_drugs = [];
-    foreach ($lines as $line) {
-        $drug_info = get_drug_info(trim($line), $conn);
+    $unique_lines = array_unique(array_map('trim', $lines)); // 중복된 텍스트 제거
+
+    foreach ($unique_lines as $line) {
+        $drug_info = get_drug_info($line, $conn);
         if (!empty($drug_info)) {
             foreach ($drug_info as $drug) {
                 $found_drugs[] = $drug;
@@ -26,106 +29,94 @@ function display_results($lines, $conn) {
     }
 
     if (!empty($found_drugs)) {
-        echo "<div class='result'><h3>Found Drugs:</h3><ul>";
-        foreach ($found_drugs as $drug) {
-            echo "<li>" . $drug['name'] . " - " . $drug['dosage'] . "</li>";
-        }
-        echo "</ul></div>";
+        $unique_drugs = array_unique($found_drugs, SORT_REGULAR); // 중복된 약 정보 제거
+        return $unique_drugs;
     } else {
-        echo "<div class='result'>No matching drugs found in the database.</div>";
+        return [];
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['extracted_text'])) {
-    // 사용자가 수정한 텍스트를 가져옴
     $extracted_text = $_POST['extracted_text'];
-    $lines = explode("\n", $extracted_text);
-
-    // 데이터베이스 연결
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    echo "<pre>Extracted Text: $extracted_text</pre>";
-    display_results($lines, $conn);
-
-    echo "<form method='post' id='searchForm'>";
-    echo "<textarea name='extracted_text' rows='10' cols='50'>$extracted_text</textarea><br>";
-    echo "<input type='submit' value='수정 후 다시 검색'>";
-    echo "</form>";
-
-    $conn->close();
-    exit;
-} else if (isset($_FILES['image']) && isset($_POST['x']) && isset($_POST['y']) && isset($_POST['width']) && isset($_POST['height'])) {
-    echo "Received image and coordinates<br>";
-    $x = intval($_POST['x']);
-    $y = intval($_POST['y']);
-    $width = intval($_POST['width']);
-    $height = intval($_POST['height']);
-
-    // 파일 저장 경로
-    $target_dir = "uploads/";
-    if (!file_exists($target_dir)) {
-        mkdir($target_dir, 0777, true);
-    }
-    $target_file = $target_dir . "selected_image.png";
-
-    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        echo "Image uploaded to $target_file<br>";
-
-        // 절대 경로로 변경
-        $absolute_target_file = realpath($target_file);
-        echo "Absolute target file: $absolute_target_file<br>";
-
-        $absolute_processed_image = $target_dir . "processed_selected_image.png";
-        $absolute_overlay_image = $target_dir . "overlay_selected_image.png";
-        echo "Processed image path: $absolute_processed_image<br>";
-        echo "Overlay image path: $absolute_overlay_image<br>";
-
-        // Python 스크립트를 호출하여 특정 영역 추출 및 네모 박스 표시
-        $python = "C:/Users/315/AppData/Local/Programs/Python/Python312/python.exe"; // Python 실행 파일 경로
-        $script = "C:/xampp/htdocs/pilleat/image_processing.py"; // Python 스크립트 경로
-
-        $command = escapeshellcmd("$python \"$script\" \"$absolute_target_file\" \"$absolute_processed_image\" \"$absolute_overlay_image\" \"$x\" \"$y\" \"$width\" \"$height\" 2>&1");
-        echo "Running command: $command<br>";
-        $output = shell_exec($command);
-        echo "Python Output:<br>$output<br>";
-
-        // 추출된 텍스트 읽기
-        $extracted_text_file = "C:/xampp/htdocs/pilleat/extracted_text.txt";
-        if (file_exists($extracted_text_file)) {
-            $extracted_text = file_get_contents($extracted_text_file);
-            echo "<pre>Extracted Text: $extracted_text</pre>";
-
-            // 데이터베이스 연결
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $lines = explode("\n", $extracted_text);
-            display_results($lines, $conn);
-
-            echo "<form method='post' id='searchForm'>";
-            echo "<textarea name='extracted_text' rows='10' cols='50'>$extracted_text</textarea><br>";
-            echo "<input type='submit' value='수정 후 다시 검색'>";
-            echo "</form>";
-
-            $conn->close();
-            exit;
-        } else {
-            echo "텍스트 추출에 실패했습니다. 파일이 존재하지 않습니다: $extracted_text_file<br>";
-            if (!file_exists(dirname($extracted_text_file))) {
-                echo "디렉토리가 존재하지 않습니다: " . dirname($extracted_text_file) . "<br>";
-            } else {
-                echo "디렉토리는 존재합니다: " . dirname($extracted_text_file) . "<br>";
-            }
-        }
-    } else {
-        echo "<div class='result'>파일 업로드에 실패했습니다.</div>";
-    }
+    $_SESSION['extracted_text'] = $extracted_text; // 세션에 저장
+} else if (isset($_SESSION['extracted_text'])) {
+    $extracted_text = $_SESSION['extracted_text'];
 } else {
-    echo "필요한 데이터가 없습니다.";
+    echo "추출된 텍스트가 없습니다.";
+    exit;
 }
+
+$lines = explode("\n", $extracted_text);
+
+// 데이터베이스 연결
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$found_drugs = display_results($lines, $conn);
+
+$message = "";
+$message_class = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_drugs'])) {
+    $user_id = $_SESSION['id'];
+    foreach ($found_drugs as $drug) {
+        $stmt = $conn->prepare("INSERT INTO medication (name, dosage, user_id) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $drug['name'], $drug['dosage'], $user_id); // user_id는 VARCHAR이므로 sss로 변경
+        if ($stmt->execute()) {
+            $message = "약 정보가 성공적으로 저장되었습니다.";
+            $message_class = "success";
+        } else {
+            $message = "약 정보 저장에 실패했습니다: " . $stmt->error;
+            $message_class = "error";
+        }
+    }
+}
+
+$conn->close();
 ?>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PillEat</title>
+    <link rel="stylesheet" href="result.css">
+</head>
+<body>
+    <div class="header">
+        <h1>PillEat</h1>
+    </div>
+    <div class="content">
+        <div class="result-container">
+            <?php
+            echo "<h2>Extracted Text</h2>";
+            echo "<pre style='background-color: #f9f9f9; padding: 10px; border-radius: 5px;'>$extracted_text</pre>";
+            ?>
+            <form method="post">
+                <textarea name="extracted_text" rows="10"><?php echo $extracted_text; ?></textarea><br>
+                <button type="submit">수정 후 다시 검색</button>
+                <button type="submit" name="apply_drugs">적용</button>
+            </form>
+            <a href="upload.php" class="main-btn">메인으로</a>
+        </div>
+        <div class="found-drugs">
+        <?php
+            if (!empty($found_drugs)) {
+                echo "<div class='result'><h3>Found Drugs:</h3><ul class='drug-list'>";
+                foreach ($found_drugs as $drug) {
+                    echo "<li class='drug-item'>" . htmlspecialchars($drug['name']) . " - " . htmlspecialchars($drug['dosage']) . "</li>";
+                }
+                echo "</ul></div>";
+                if ($message) {
+                    echo "<div class='result $message_class'>$message <a href='check.php' class='main-btn'>복용중인 약 확인</a></div>";
+                }
+            } else {
+                echo "<div class='result'>No matching drugs found in the database.</div>";
+            }
+            ?>
+        </div>
+    </div>
+</body>
+</html>

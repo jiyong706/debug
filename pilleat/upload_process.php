@@ -36,16 +36,19 @@ if (isset($_FILES['image']) && isset($_POST['x']) && isset($_POST['y']) && isset
         $absolute_overlay_image = realpath($overlay_image);
 
         // Python 스크립트를 호출하여 특정 영역 추출 및 네모 박스 표시
-        $python = "C:/Users/315/AppData/Local/Programs/Python/Python312/python.exe"; // Python 실행 파일 경로
+        $python = "C:/Python312/python.exe"; // Python 실행 파일 경로
         $script = "C:/xampp/htdocs/pilleat/image_processing.py"; // Python 스크립트 경로
 
         $command = escapeshellcmd("$python \"$script\" \"$absolute_target_file\" \"$absolute_processed_image\" \"$absolute_overlay_image\" \"$x\" \"$y\" \"$width\" \"$height\"");
         $output = shell_exec($command);
+        echo "<pre>Running command: $command</pre>";
+        echo "<pre>Python Output: $output</pre>";
 
         // 추출된 텍스트 읽기
         $extracted_text_file = "extracted_text.txt";
         if (file_exists($extracted_text_file)) {
             $extracted_text = file_get_contents($extracted_text_file);
+            echo "<pre>Extracted Text: $extracted_text</pre>";
 
             // 추출된 텍스트를 세션에 저장하고 결과 페이지로 리디렉션
             session_start();

@@ -1,26 +1,28 @@
 <?php
-session_start();
 include_once "config.php";
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!empty($_POST['password']) && !empty($_POST['confirm_password'])) {
-        if ($_POST['password'] !== $_POST['confirm_password']) {
-            $_SESSION['error'] = '비밀번호가 일치하지 않습니다.';
-            header("Location: signup_step2.php");
+    if (!empty($_POST['id'])) {
+        $id = $_POST['id'];
+
+        // 중복된 ID(이메일) 확인
+        $check_sql = "SELECT id FROM users WHERE id = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("s", $id);
+        $check_stmt->execute();
+        $check_stmt->store_result();
+
+        if ($check_stmt->num_rows > 0) {
+            $_SESSION['error'] = '아이디가 중복되었습니다.';
+            header("Location: signup_step1.php");
             exit();
         }
 
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-        // 사용자 아이디와 비밀번호를 세션에 저장
-        $_SESSION['password'] = $password;
-
-        // 비밀번호가 일치할 때 다음 단계로 이동
-        header("Location: signup_step3.php");
-        exit();
+        $_SESSION['id'] = $id;
     } else {
-        $_SESSION['error'] = '모든 필드를 입력해주세요.';
-        header("Location: signup_step2.php");
+        $_SESSION['error'] = '아이디를 입력해주세요.';
+        header("Location: signup_step1.php");
         exit();
     }
 }
@@ -40,6 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo 'alert("' . $_SESSION['error'] . '");';
                 unset($_SESSION['error']);
             }
+            if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
+                $_SESSION['error'] = '아이디를 입력해주세요.';
+                header("Location: signup_step1.php");
+                exit();
+            }
             ?>
         };
     </script>
@@ -48,7 +55,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container">
         <div class="form-box">
             <h1>비밀번호를 입력해주세요</h1>
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <form action="signup_step3.php" method="POST">
+                <div class="field">
+                    <input type="text" name="fname" placeholder="성" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="lname" placeholder="이름" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="birthdate" placeholder="생년월일" required>
+                </div>
                 <div class="field">
                     <input type="password" name="password" placeholder="비밀번호" required>
                 </div>

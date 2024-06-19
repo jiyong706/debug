@@ -9,9 +9,9 @@ if (!isset($_SESSION['id'])) {
 
 $post_id = $_GET['id'];
 
-$sql = "DELETE FROM posts WHERE post_id = ? AND user_id = ?";
+$sql = "DELETE FROM posts WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("is", $post_id, $_SESSION['id']);
+$stmt->bind_param("s", $user_id);
 $stmt->execute();
 
 header("Location: board.php");

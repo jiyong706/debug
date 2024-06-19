@@ -79,19 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['extracted_text'])) {
         $absolute_overlay_image = realpath($overlay_image);
 
         // Python 스크립트를 호출하여 특정 영역 추출 및 네모 박스 표시
-        $python = "C:/Users/315/AppData/Local/Programs/Python/Python312/python.exe"; // Python 실행 파일 경로
+        $python = "C:/Python312/python.exe"; // Python 실행 파일 경로
         $script = "C:/xampp/htdocs/pilleat/image_processing.py"; // Python 스크립트 경로
 
         $command = escapeshellcmd("$python \"$script\" \"$absolute_target_file\" \"$absolute_processed_image\" \"$absolute_overlay_image\" \"$x\" \"$y\" \"$width\" \"$height\"");
-        echo "Running command: $command<br>";
         $output = shell_exec($command);
-        echo "Python Output:<br>$output<br>";
 
         // 추출된 텍스트 읽기
-        $extracted_text_file = "C:/xampp/htdocs/pilleat/extracted_text.txt";
+        $extracted_text_file = "extracted_text.txt";
         if (file_exists($extracted_text_file)) {
             $extracted_text = file_get_contents($extracted_text_file);
-            echo "<pre>Extracted Text: $extracted_text</pre>";
 
             // 데이터베이스 연결
             $conn = new mysqli($servername, $username, $password, $dbname);
@@ -99,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['extracted_text'])) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
+            echo "<pre>Extracted Text: $extracted_text</pre>";
             $lines = explode("\n", $extracted_text);
             display_results($lines, $conn);
 
@@ -110,12 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['extracted_text'])) {
             $conn->close();
             exit;
         } else {
-            echo "텍스트 추출에 실패했습니다. 파일이 존재하지 않습니다: $extracted_text_file<br>";
-            if (!file_exists(dirname($extracted_text_file))) {
-                echo "디렉토리가 존재하지 않습니다: " . dirname($extracted_text_file) . "<br>";
-            } else {
-                echo "디렉토리는 존재합니다: " . dirname($extracted_text_file) . "<br>";
-            }
+            echo "텍스트 추출에 실패했습니다.";
         }
     } else {
         echo "<div class='result'>파일 업로드에 실패했습니다.</div>";

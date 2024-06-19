@@ -13,55 +13,60 @@
             background-color: #f5f5f5;
         }
         .header {
-           	background-color: white;
-           	padding: 20px;
-           	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .header h1 {
-           	margin: 0;
-           	font-size: 24px;
+            margin: 0;
+            font-size: 24px;
         }
         .content {
-           	margin: 20px;
+            margin: 20px;
         }
         .upload-container {
-           	background-color: white;
-           	padding: 20px;
-           	border-radius: 10px;
-           	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-           	display: inline-block;
-           	position: relative;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            position: relative;
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .upload-container img {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
         }
         .upload-container input[type="file"] {
-           	display: none;
+            display: none;
         }
         .upload-icon {
-           	font-size: 50px;
-           	cursor: pointer;
-        }
-        canvas {
-           	border: 1px solid #ccc;
-           	cursor: crosshair;
-           	margin-bottom: 20px;
+            font-size: 50px;
+            cursor: pointer;
         }
         .result {
-           	margin-top: 20px;
-           	text-align: left;
-           	display: inline-block;
-           	background-color: white;
-           	padding: 20px;
-           	border-radius: 10px;
-           	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .overlay {
-           	position: absolute;
-           	top: 0;
-           	left: 0;
-           	color: red;
-           	font-size: 20px;
-           	font-weight: bold;
-           	background-color: rgba(255, 255, 255, 0.5);
-           	padding: 10px;
+        .main-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .main-btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -76,7 +81,9 @@
             <input type="file" id="imageUpload" accept="image/*">
             <canvas id="canvas" width="500" height="500"></canvas>
             <br>
-            <button id="processImage">영역 선택 및 텍스트 추출</button>
+            <button id="processImage">텍스트 추출</button>
+            <br><br>
+            <a href="index.php" class="main-btn">메인으로</a> <!-- 메인 버튼 추가 -->
         </div>
         <div class="result" id="result"></div>
     </div>
@@ -167,5 +174,3 @@
     </script>
 </body>
 </html>
-
-<!-- 여기까지 되돌리기 -->
